@@ -203,6 +203,10 @@ void *cuttles_realloc(void *ptr, size_t size)
 			// Must relocate memory
 			void *new_ptr = cuttles_malloc(size);
 			if (new_ptr != NULL) {
+				// TODO: this is the only use of <string.h> in the file. It would be nice
+				// to use a custom routine and remove the dependency; we can optimise for
+				// the fact that we only ever need to copy a multiple of CHUNK_SIZE (with
+				// special treatment for the destination header).
 				memcpy(new_ptr, ptr, header->chunks * CHUNK_SIZE - sizeof(DataHeader));
 				cuttles_free(ptr);
 			}
