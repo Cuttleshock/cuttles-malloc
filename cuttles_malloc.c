@@ -218,6 +218,11 @@ void *cuttles_realloc(void *ptr, size_t size)
 
 void cuttles_free(void *ptr)
 {
+	if (ptr == NULL) {
+		// free() is well defined to be a no-op on NULL
+		return;
+	}
+
 	// DANGER: POINTER ARITHMETIC
 	DataHeader *header = ((DataHeader *)ptr) - 1;
 	if (header->heap_index >= 0) {
